@@ -12,6 +12,11 @@ The challenge is to develop a **reliable, lightweight, and flexible inference me
 ### 🎯 Goal
 Create a **lightweight FPGA-based accelerator IP** and **inference Engine** that offloads GEMM operations from the CPU, providing **significant speedup** on resource-constrained RISC-V edge devices.
 
+#### Architecture Reference Diagrams
+![System Architecture](https://github.com/PrabathBK/Systolic_Array_Matmul_for_Gemma3_Acc/blob/main/Results/System_architect.png)
+![Inference Engine](https://github.com/PrabathBK/Systolic_Array_Matmul_for_Gemma3_Acc/blob/main/Results/Inferer_eng.png)
+![IP Design](https://github.com/PrabathBK/Systolic_Array_Matmul_for_Gemma3_Acc/blob/main/Results/IP_design.png)
+
 ### 🏆 Contributions
 
 1. **Lightweight, scalable accelerator (GEMMA IP)**
