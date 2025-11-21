@@ -1,7 +1,92 @@
-# Systolic Array Matrix Multiplication IPs for Gemma LLM Accelerator
+# Systolic Array Matrix Multiplication IPs for SLM Inference Engine on Edge
 
-This repository contains multiple **systolic array accelerator IPs** designed to accelerate the **Gemma LLM inference engine** on FPGA/SoC platforms. It includes parameterized RTL implementations, tiling extensions, host test software, and integration with the **VEGA RISC-V processor**.
+## 📘 Introduction
 
+Current **Small Language Model (SLM)** inference solutions for edge devices face major performance bottlenecks. When deployed on **RV32-based edge processors**, these limitations become even more severe due to:
+
+- Limited compute resources, memory bandwidth, and lack of specialized hardware
+- Software-only inference pipelines that are inefficient under edge constraints
+
+The challenge is to develop a **reliable, lightweight, and flexible inference methodology** that supports full SLM inference on RV32 platforms.
+
+### 🎯 Goal
+Create a **lightweight FPGA-based accelerator IP** and **inference Engine** that offloads GEMM operations from the CPU, providing **significant speedup** on resource-constrained RISC-V edge devices.
+
+### 🏆 Contributions
+
+1. **Lightweight, scalable accelerator (GEMMA IP)**
+   - Accelerates INT8 GEMM operations  
+   - Supports tiling to reduce external memory traffic  
+   - Scalable systolic designs (INT8, INT4, FP16 variants)
+
+2. **Bare-metal inference engine framework**
+   - Fully sequential runtime  
+   - Flexible and extensible  
+   - Cross-platform verification  
+   - Designed for RV32 SoCs and FPGA platforms
+
+---
+
+## 🛠️ Proposed Methodology
+
+### 1. Systolic Array Architecture (16×16)
+
+Each Processing Element (PE):
+
+- Performs signed **INT8 × INT8** multiplication  
+- Accumulates into **32-bit sum**  
+- Receives weights from **north** and activations from **west**  
+- Introduces a one-cycle delay between adjacent PEs  
+
+This enables highly parallelized, pipelined matrix multiplication suitable for FPGA.
+
+---
+
+### 2. Tiled Matrix Multiplication
+
+Large matrices (e.g., **1024×1024**) are decomposed into **16×16 tiles**, enabling:
+
+- Burst DMA transfers of tiles  
+- On-chip buffering  
+- **Double buffering** for overlapped:
+  - Tile fetch  
+  - Computation  
+  - Result writeback  
+
+Tile partial sums are accumulated until forming the full result matrix.
+
+---
+
+### 3. AXI Integration + Inference Engine
+
+- **AXI4-Lite** for CPU-controlled registers  
+- **AXI4 Master** for DMA-based reads/writes  
+- Bare-metal inference runtime handles:
+  - Custom memory allocation  
+  - Tiling schedule  
+  - Accelerator synchronization  
+
+### ✅ Advantages
+
+- Latency reduced **from minutes to seconds**
+- Open-source RISC-V + FPGA platform
+- Energy-efficient and highly scalable
+- Straightforward extension to larger systolic arrays or mixed-precision inference
+
+---
+
+# 📐 Architecture Diagrams
+
+### Systolic Array Block Diagram
+![systolic array architecture diagram](https://github.com/PrabathBK/Systolic_Array_Matmul_for_Gemma3_Acc/blob/main/Results/sys_block.png)
+
+### Tiling Architecture (32×32 using 16×16 tiles)
+![Tiling architecture diagram](https://github.com/PrabathBK/Systolic_Array_Matmul_for_Gemma3_Acc/blob/main/Results/Acc_IP.png)
+
+### Accelerator Integration with RISC-V + AXI
+![acceleration block](https://github.com/PrabathBK/Systolic_Array_Matmul_for_Gemma3_Acc/blob/main/Results/systolic_soc_implementation.png)
+
+---
 ## 🚀 Features
 
 - **High-throughput INT8 systolic array** accelerators (16×16, 32×32)
