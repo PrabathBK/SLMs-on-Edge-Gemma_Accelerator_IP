@@ -29,6 +29,8 @@ Create a **lightweight FPGA-based accelerator IP** and **inference Engine** that
    - Flexible and extensible  
    - Cross-platform verification  
    - Designed for RV32 SoCs and FPGA platforms
+   
+   > 📌 **Note**: The Inference Engine repository will be released soon!
 
 ---
 
